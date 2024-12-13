@@ -23,7 +23,7 @@ All credit for the core ideas and concepts of WFC goes to mxgmn. This repository
 1. **Clone the repository**:
 
    ```bash
-   git clone https://github.com/your-username/wfc.git
+   git clone https://github.com/rick-dalley/wfc.git
    cd wfc
 
    ```

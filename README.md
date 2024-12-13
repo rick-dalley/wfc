@@ -63,25 +63,27 @@ Contributions are welcome! If you find a bug or have a suggestion for improvemen
 1. Fork this repository.
 2. Create a new branch for your changes:
 
-   ````bash
-   ```git checkout -b feature/my-feature
-
-   ````
+   ```bash
+   git checkout -b feature/my-feature
+   ```
 
 3. Commit your changes:
 
-````git commit -m "Add my feature"
+```
+git commit -m "Add my feature"
+```
 
 4. Push to your branch:
 
-```git push origin feature/my-feature
+```
+git push origin feature/my-feature
+```
 
 5. Open a pull request.
-Make sure to follow the existing coding style and include tests where applicable.
+   Make sure to follow the existing coding style and include tests where applicable.
 
-7. **License**
+6. **License**
 
 This project is licensed under the [MIT License](https://opensource.org/licenses/MIT).
 
 The original C# implementation by mxgmn is also licensed under the MIT License.
-````

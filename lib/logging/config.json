@@ -1,0 +1,29 @@
+[
+  {
+    "logLevel": "error",
+    "output": {
+      "type": "file",
+      "path": "logging/logs/app.log"
+    }
+  },
+  {
+    "logLevel": "warning",
+    "output": {
+      "type": "file",
+      "path": "logging/logs/app.log"
+    }
+  },
+  {
+    "logLevel": "debug",
+    "output": {
+      "type": "file",
+      "path": "logging/logs/app.log"
+    }
+  },
+  {
+    "logLevel": "info",
+    "output": {
+      "type": "console"
+    }
+  }
+]

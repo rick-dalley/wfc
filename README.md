@@ -23,8 +23,8 @@ All credit for the core ideas and concepts of WFC goes to mxgmn. This repository
 1. **Clone the repository**:
 
    ```bash
-   git clone https://github.com/your-username/wfc-dart.git
-   cd wfc-dart
+   git clone https://github.com/your-username/wfc.git
+   cd wfc
 
    ```
 

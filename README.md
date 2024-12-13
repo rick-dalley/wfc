@@ -41,7 +41,7 @@ All credit for the core ideas and concepts of WFC goes to mxgmn. This repository
    Modify the sample JSON file (samples.json) to include your tile configurations.
 
 5. **Output**:
-   Generated bitmaps and optional text outputs will be saved in the output/ directory.
+   Generated bitmaps and optional text outputs will be saved in the output/ directory. Samples of the output can be found in the [output folder](https://github.com/rick-dalley/wfc/tree/master/output)
 
 ## Code Structure
 
@@ -63,9 +63,9 @@ Contributions are welcome! If you find a bug or have a suggestion for improvemen
 1. Fork this repository.
 2. Create a new branch for your changes:
 
-   ```bash
-   git checkout -b feature/my-feature
-   ```
+```
+git checkout -b feature/my-feature
+```
 
 3. Commit your changes:
 

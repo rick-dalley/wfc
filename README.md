@@ -30,17 +30,18 @@ All credit for the core ideas and concepts of WFC goes to mxgmn. This repository
 
 2. **Install dependencies**:
    Ensure you have Dart installed on your system. Install dependencies by running:
+   ```
    dart pub get
-
-3. **Run the project**:
+   ```
+4. **Run the project**:
    To execute the example provided in main.dart, use:
    dart run
 
-4. **Input files**:
+5. **Input files**:
    Place your XML configuration files in the appropriate directory (e.g., lib/tilesets).
    Modify the sample JSON file (samples.json) to include your tile configurations.
 
-5. **Output**:
+6. **Output**:
    Generated bitmaps and optional text outputs will be saved in the output/ directory. Samples of the output can be found in the [output folder](https://github.com/rick-dalley/wfc/tree/master/output)
 
 ## Code Structure

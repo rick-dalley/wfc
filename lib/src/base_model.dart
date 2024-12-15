@@ -152,7 +152,8 @@ class Model implements Saveable {
         continue;
       }
       int remainingValues = sumsOfOnes[i];
-      num entropy = heuristic == Heuristic.entropy ? entropies[i] : remainingValues;
+      num entropy =
+          heuristic == Heuristic.entropy ? entropies[i] : remainingValues;
       if (remainingValues > 1 && entropy <= min) {
         double noise = 1E-6 * random.nextDouble();
         if (entropy + noise < min) {
@@ -302,9 +303,11 @@ class Model implements Saveable {
 
 //factory method to create a model
 Model createModel(Tile tile, String basePath, {LogHandler? logHandler}) {
-  final log = logHandler ?? Logger().log; // Use the provided logger or the default one
+  final log =
+      logHandler ?? Logger().log; // Use the provided logger or the default one
   if (tile.category == Category.overlapping) {
-    return OverlappingModel(tile, "$basePath/assets/samples/${tile.name}.png", logHandler: log);
+    return OverlappingModel(tile, "$basePath/assets/samples/${tile.name}.png",
+        logHandler: log);
   } else {
     return SimpleTiledModel(tile, "$basePath/assets/tilesets", logHandler: log);
   }

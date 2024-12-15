@@ -10,11 +10,14 @@ class Pair<T> {
 
   // Override == operator to compare Pair objects
   @override
-  bool operator ==(Object other) => identical(this, other) || (other is Pair<T> && other.x == x && other.y == y);
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is Pair<T> && other.x == x && other.y == y);
 
   // Override hashCode to ensure correct behavior in collections
   @override
-  int get hashCode => Object.hash(x, y); // Use Object.hash for better combination
+  int get hashCode =>
+      Object.hash(x, y); // Use Object.hash for better combination
 }
 
 /// Matrix - handles a two dimensional array of T
@@ -114,7 +117,9 @@ class Matrix3D<T> {
           (_) => rows > 0
               ? List.generate(
                   rows,
-                  (_) => cols > 0 ? List.generate(cols, (_) => defaultValue as T) : [],
+                  (_) => cols > 0
+                      ? List.generate(cols, (_) => defaultValue as T)
+                      : [],
                 )
               : [],
         );
@@ -223,8 +228,10 @@ class BitmapHelper {
     final result = <int>[];
 
     for (var pixel in image) {
-      final bgra32 =
-          ((pixel.r.toInt()) << 16) | ((pixel.g.toInt()) << 8) | (pixel.b.toInt()) | ((pixel.a.toInt()) << 24);
+      final bgra32 = ((pixel.r.toInt()) << 16) |
+          ((pixel.g.toInt()) << 8) |
+          (pixel.b.toInt()) |
+          ((pixel.a.toInt()) << 24);
 
       result.add(bgra32);
     }
@@ -265,7 +272,8 @@ class BitmapHelper {
     List<int> rotatedBitmap = List<int>.filled(size * size, 0);
     for (int y = 0; y < size; y++) {
       for (int x = 0; x < size; x++) {
-        rotatedBitmap[x + y * size] = bitmapResult.bitmap[(size - 1 - y) + x * size];
+        rotatedBitmap[x + y * size] =
+            bitmapResult.bitmap[(size - 1 - y) + x * size];
       }
     }
     return BitmapResult(rotatedBitmap, bitmapResult.width, bitmapResult.height);
@@ -277,9 +285,11 @@ class BitmapHelper {
     List<int> reflectedBitmap = List<int>.filled(size * size, 0);
     for (int y = 0; y < size; y++) {
       for (int x = 0; x < size; x++) {
-        reflectedBitmap[x + y * size] = bitmapResult.bitmap[(size - 1 - x) + y * size];
+        reflectedBitmap[x + y * size] =
+            bitmapResult.bitmap[(size - 1 - x) + y * size];
       }
     }
-    return BitmapResult(reflectedBitmap, bitmapResult.width, bitmapResult.height);
+    return BitmapResult(
+        reflectedBitmap, bitmapResult.width, bitmapResult.height);
   }
 }

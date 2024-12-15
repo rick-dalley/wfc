@@ -1,8 +1,7 @@
 import 'dart:io';
-
 import 'package:image/image.dart' as img;
 
-// Pair = stores the result of a function that needs to return two values as a tuple
+/// Pair = stores the result of a function that needs to return two values as a tuple
 class Pair<T> {
   final T x;
   final T y;
@@ -11,17 +10,14 @@ class Pair<T> {
 
   // Override == operator to compare Pair objects
   @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-      (other is Pair<T> && other.x == x && other.y == y);
+  bool operator ==(Object other) => identical(this, other) || (other is Pair<T> && other.x == x && other.y == y);
 
   // Override hashCode to ensure correct behavior in collections
   @override
-  int get hashCode =>
-      Object.hash(x, y); // Use Object.hash for better combination
+  int get hashCode => Object.hash(x, y); // Use Object.hash for better combination
 }
 
-// Matrix<T> - handles a two dimensional array of T
+/// Matrix - handles a two dimensional array of T
 class Matrix<T> {
   final List<List<T>> _matrix;
 
@@ -106,7 +102,7 @@ class Matrix<T> {
   }
 }
 
-// Matrix3D<T> handles a 3D array of T
+/// Matrix3D handles a 3D array of T
 class Matrix3D<T> {
   final List<List<List<T>>> _matrix;
 
@@ -118,9 +114,7 @@ class Matrix3D<T> {
           (_) => rows > 0
               ? List.generate(
                   rows,
-                  (_) => cols > 0
-                      ? List.generate(cols, (_) => defaultValue as T)
-                      : [],
+                  (_) => cols > 0 ? List.generate(cols, (_) => defaultValue as T) : [],
                 )
               : [],
         );
@@ -169,9 +163,7 @@ class Matrix3D<T> {
   }
 }
 
-// this class is not used anywhere
-// you can comment it out if you like
-// it was included in the original source code in C#
+/// Helper
 class Helper {
   int random(List<double> weights, double r) {
     double sum = 0;
@@ -197,7 +189,8 @@ class Helper {
   }
 }
 
-// BitmapResult holds the reulst of creating a bitmap
+/// BitmapResult
+// holds the reulst of creating a bitmap
 // bitmap - the data of the bitmap as an array of ints
 // width - the width as an integer
 // height - the height as an integer
@@ -209,26 +202,32 @@ class BitmapResult {
   BitmapResult(this.bitmap, this.width, this.height);
 }
 
-// BitmapHelper - a utility class to load and save bitmaps
+/// BitmapHelper
+// - a utility class to load and save bitmaps
 class BitmapHelper {
   // load a bitmap from a given location
   static BitmapResult loadBitmap(String filename) {
     // Load the image from file as a byte list
+    // Load and decode the image from file
     final bytes = File(filename).readAsBytesSync();
-    final image =
-        img.decodeImage(bytes)!; // Decode the image from the byte list
+    final image = img.decodeImage(bytes);
 
-    int width = image.width;
-    int height = image.height;
+    if (image == null) {
+      throw Exception('Unable to decode image: $filename');
+    }
+
+    final width = image.width;
+    final height = image.height;
 
     // Convert the image pixels to a List<int> (BGRA32 equivalent)
-    List<int> result = List<int>.generate(width * height, (i) {
-      int pixel = image.getPixel(i % width, i ~/ width);
-      // Assuming BGRA32 format
-      return (pixel & 0xFF00FF00) |
-          ((pixel & 0xFF0000) >> 16) |
-          ((pixel & 0xFF) << 16);
-    });
+    final result = <int>[];
+
+    for (var pixel in image) {
+      final bgra32 =
+          ((pixel.r.toInt()) << 16) | ((pixel.g.toInt()) << 8) | (pixel.b.toInt()) | ((pixel.a.toInt()) << 24);
+
+      result.add(bgra32);
+    }
 
     return BitmapResult(result, width, height);
   }
@@ -236,21 +235,23 @@ class BitmapHelper {
   // saveBitmap
   // save a list of ints as a bitmap at a specified location with the specified dimensions
   // as a png
-  static void saveBitmap(
-      List<int> data, int width, int height, String fileName) {
+  void saveBitmap(List<int> data, int width, int height, String fileName) {
     // Create an empty image
-    final image = img.Image(width, height);
+    final image = img.Image(width: width, height: height);
+
     // Convert BGRA32 format back to the image pixels
     for (int y = 0; y < height; y++) {
       for (int x = 0; x < width; x++) {
         int index = y * width + x;
         int pixel = data[index];
-        // Assuming BGRA32 format
-        image.setPixel(
-            x,
-            y,
-            img.getColor(
-                (pixel & 0xFF0000) >> 16, (pixel & 0xFF00) >> 8, pixel & 0xFF));
+        // Extract RGBA components from BGRA32
+        int r = (pixel & 0xFF0000) >> 16;
+        int g = (pixel & 0xFF00) >> 8;
+        int b = pixel & 0xFF;
+        int a = (pixel & 0xFF000000) >> 24;
+
+        // Manually set the pixel color in RGBA format
+        image.setPixelRgba(x, y, r, g, b, a);
       }
     }
 
@@ -260,12 +261,11 @@ class BitmapHelper {
 
   // rotate
   // Rotate the bitmap 90 degrees clockwise
-  static BitmapResult rotate(BitmapResult bitmapResult, int size) {
+  BitmapResult rotate(BitmapResult bitmapResult, int size) {
     List<int> rotatedBitmap = List<int>.filled(size * size, 0);
     for (int y = 0; y < size; y++) {
       for (int x = 0; x < size; x++) {
-        rotatedBitmap[x + y * size] =
-            bitmapResult.bitmap[(size - 1 - y) + x * size];
+        rotatedBitmap[x + y * size] = bitmapResult.bitmap[(size - 1 - y) + x * size];
       }
     }
     return BitmapResult(rotatedBitmap, bitmapResult.width, bitmapResult.height);
@@ -273,15 +273,13 @@ class BitmapHelper {
 
   // reflect
   // Reflect the bitmap horizontally
-  static BitmapResult reflect(BitmapResult bitmapResult, int size) {
+  BitmapResult reflect(BitmapResult bitmapResult, int size) {
     List<int> reflectedBitmap = List<int>.filled(size * size, 0);
     for (int y = 0; y < size; y++) {
       for (int x = 0; x < size; x++) {
-        reflectedBitmap[x + y * size] =
-            bitmapResult.bitmap[(size - 1 - x) + y * size];
+        reflectedBitmap[x + y * size] = bitmapResult.bitmap[(size - 1 - x) + y * size];
       }
     }
-    return BitmapResult(
-        reflectedBitmap, bitmapResult.width, bitmapResult.height);
+    return BitmapResult(reflectedBitmap, bitmapResult.width, bitmapResult.height);
   }
 }

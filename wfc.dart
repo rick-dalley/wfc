@@ -42,8 +42,8 @@ void prepareOutputDestination(String pathToOutput) {
 void main() async {
   //intitialize location values
   final String currentDirectory = Directory.current.path;
-  final String jsonPath = "$currentDirectory/lib/samples.json";
-  final String loggingPath = "$currentDirectory/lib/logging/config.json";
+  final String jsonPath = "$currentDirectory/assets/samples.json";
+  final String loggingPath = "$currentDirectory/lib/src/logging/config.json";
 
   // start the logger
   logger.startWith(loggingPath);

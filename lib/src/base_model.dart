@@ -304,8 +304,8 @@ class Model implements Saveable {
 Model createModel(Tile tile, String basePath, {LogHandler? logHandler}) {
   final log = logHandler ?? Logger().log; // Use the provided logger or the default one
   if (tile.category == Category.overlapping) {
-    return OverlappingModel(tile, "$basePath/lib/samples/${tile.name}.png", logHandler: log);
+    return OverlappingModel(tile, "$basePath/assets/samples/${tile.name}.png", logHandler: log);
   } else {
-    return SimpleTiledModel(tile, "$basePath/lib/tilesets", logHandler: log);
+    return SimpleTiledModel(tile, "$basePath/assets/tilesets", logHandler: log);
   }
 }

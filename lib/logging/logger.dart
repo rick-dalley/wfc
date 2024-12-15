@@ -116,7 +116,6 @@ extension LogLevelExtension on LogLevel {
       case LogLevel.error:
         return 'ERROR';
       case LogLevel.none:
-      default:
         return 'NONE';
     }
   }

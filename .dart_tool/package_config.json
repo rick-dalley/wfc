@@ -3,7 +3,7 @@
   "packages": [
     {
       "name": "_fe_analyzer_shared",
-      "rootUri": "file:///Users/richarddalley/.pub-cache/hosted/pub.dev/_fe_analyzer_shared-73.0.0",
+      "rootUri": "file:///Users/richarddalley/.pub-cache/hosted/pub.dev/_fe_analyzer_shared-77.0.0",
       "packageUri": "lib/",
       "languageVersion": "3.3"
     },
@@ -15,7 +15,7 @@
     },
     {
       "name": "analyzer",
-      "rootUri": "file:///Users/richarddalley/.pub-cache/hosted/pub.dev/analyzer-6.8.0",
+      "rootUri": "file:///Users/richarddalley/.pub-cache/hosted/pub.dev/analyzer-7.0.0",
       "packageUri": "lib/",
       "languageVersion": "3.3"
     },
@@ -129,7 +129,7 @@
     },
     {
       "name": "macros",
-      "rootUri": "file:///Users/richarddalley/.pub-cache/hosted/pub.dev/macros-0.1.2-main.4",
+      "rootUri": "file:///Users/richarddalley/.pub-cache/hosted/pub.dev/macros-0.1.3-main.0",
       "packageUri": "lib/",
       "languageVersion": "3.4"
     },
@@ -332,10 +332,10 @@
       "languageVersion": "3.5"
     }
   ],
-  "generated": "2024-12-10T00:27:21.426229Z",
+  "generated": "2024-12-15T21:26:26.194362Z",
   "generator": "pub",
-  "generatorVersion": "3.5.4",
+  "generatorVersion": "3.6.0",
   "flutterRoot": "file:///Users/richarddalley/flutter",
-  "flutterVersion": "3.24.4",
+  "flutterVersion": "3.27.0",
   "pubCache": "file:///Users/richarddalley/.pub-cache"
 }

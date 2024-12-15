@@ -1,8 +1,8 @@
 import 'dart:math';
 
-import 'package:wfc/logging/logger.dart';
-import 'package:wfc/overlapping_model.dart';
-import 'package:wfc/simple_tile_modal.dart';
+import 'package:wfc/src/logging/logger.dart';
+import 'package:wfc/src/overlapping_model.dart';
+import 'package:wfc/src/simple_tile_modal.dart';
 
 import 'bitmap_helper.dart';
 import 'tile.dart';

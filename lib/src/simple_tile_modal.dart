@@ -1,8 +1,8 @@
 ﻿import 'dart:io';
-import 'package:wfc/bitmap_helper.dart';
-import 'package:wfc/base_model.dart';
-import 'package:wfc/logging/logger.dart';
-import 'package:wfc/tile.dart';
+import 'package:wfc/src/bitmap_helper.dart';
+import 'package:wfc/src/base_model.dart';
+import 'package:wfc/src/logging/logger.dart';
+import 'package:wfc/src/tile.dart';
 import 'package:xml/xml.dart';
 
 // SimpleTiledModel

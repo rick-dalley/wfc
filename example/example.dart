@@ -1,7 +1,7 @@
 import 'dart:io';
 import 'dart:math';
 
-import 'package:wfc/base_model.dart';
+import 'package:wfc/src/base_model.dart';
 
 import '../wfc.dart';
 

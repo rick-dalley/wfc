@@ -2,11 +2,11 @@
 
 import 'dart:typed_data';
 
-import 'package:wfc/logging/logger.dart';
-import 'package:wfc/tile.dart';
+import 'package:wfc/src/logging/logger.dart';
+import 'package:wfc/src/tile.dart';
 
-import 'package:wfc/bitmap_helper.dart';
-import 'package:wfc/base_model.dart';
+import 'package:wfc/src/bitmap_helper.dart';
+import 'package:wfc/src/base_model.dart';
 
 // OverlappingModel
 // extends the base class Model

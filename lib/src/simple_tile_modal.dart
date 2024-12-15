@@ -1,4 +1,4 @@
-﻿import 'dart:io';
+import 'dart:io';
 import 'package:wfc/src/bitmap_helper.dart';
 import 'package:wfc/src/base_model.dart';
 import 'package:wfc/src/logging/logger.dart';
@@ -62,17 +62,20 @@ class SimpleTiledModel extends Model {
     }
 
     // rotate the values
-    List<int> rotate(List<int> array, int size) => makeTiles((x, y) => array[size - 1 - y + x * size], size);
+    List<int> rotate(List<int> array, int size) =>
+        makeTiles((x, y) => array[size - 1 - y + x * size], size);
 
     //reflect the values
-    List<int> reflect(List<int> array, int size) => makeTiles((x, y) => array[size - 1 - x + y * size], size);
+    List<int> reflect(List<int> array, int size) =>
+        makeTiles((x, y) => array[size - 1 - x + y * size], size);
 
     List<double> weightList = [];
     List<List<int>> action = [];
     Map<String, int> firstOccurrence = {};
 
     // iterate through the xml elements capturing the behaviour expected
-    for (var xtile in xroot.findElements('tiles').expand((e) => e.findElements('tile'))) {
+    for (var xtile
+        in xroot.findElements('tiles').expand((e) => e.findElements('tile'))) {
       //get the name of the tile
       String tilename = xtile.getAttribute('name')!;
       // check if there is a subset with the name of the tile
@@ -176,11 +179,22 @@ class SimpleTiledModel extends Model {
     propagator = Matrix3D<int>(4, T, T, 0);
 
     // find the neighbours
-    for (var xneighbor in xroot.findElements('neighbors').expand((e) => e.findElements('neighbor'))) {
-      List<String> left = xneighbor.getAttribute('left')!.split(' ').where((item) => item.isNotEmpty).toList();
-      List<String> right = xneighbor.getAttribute('right')!.split(' ').where((item) => item.isNotEmpty).toList();
+    for (var xneighbor in xroot
+        .findElements('neighbors')
+        .expand((e) => e.findElements('neighbor'))) {
+      List<String> left = xneighbor
+          .getAttribute('left')!
+          .split(' ')
+          .where((item) => item.isNotEmpty)
+          .toList();
+      List<String> right = xneighbor
+          .getAttribute('right')!
+          .split(' ')
+          .where((item) => item.isNotEmpty)
+          .toList();
 
-      if (subset != null && (!subset.contains(left[0]) || !subset.contains(right[0]))) {
+      if (subset != null &&
+          (!subset.contains(left[0]) || !subset.contains(right[0]))) {
         continue;
       }
 
@@ -188,9 +202,11 @@ class SimpleTiledModel extends Model {
       int firstLeftOccurence = firstOccurrence[left[0]]!;
       int firstRightOccurrence = firstOccurrence[right[0]]!;
 
-      int L = action[firstLeftOccurence][left.length == 1 ? 0 : int.parse(left[1])];
+      int L =
+          action[firstLeftOccurence][left.length == 1 ? 0 : int.parse(left[1])];
       int D = action[L][1];
-      int R = action[firstRightOccurrence][right.length == 1 ? 0 : int.parse(right[1])];
+      int R = action[firstRightOccurrence]
+          [right.length == 1 ? 0 : int.parse(right[1])];
       int U = action[R][1];
 
       densePropagator[0][R][L] = true;
@@ -225,7 +241,9 @@ class SimpleTiledModel extends Model {
 
         int sT = sp.length;
         if (sT == 0) {
-          logHandler!("tile ${tilenames[t1]} has no neighbors in this direction: $d", level: LogLevel.error);
+          logHandler!(
+              "tile ${tilenames[t1]} has no neighbors in this direction: $d",
+              level: LogLevel.error);
         }
 
         // Store the compatible patterns in the sparse propagator
@@ -271,7 +289,10 @@ class SimpleTiledModel extends Model {
           .expand((e) => e.findElements('subset'))
           .firstWhere((x) => x.getAttribute('name') == tile.subset);
 
-      return Result.success(xsubset.findElements('tile').map((x) => x.getAttribute('name')!).toList());
+      return Result.success(xsubset
+          .findElements('tile')
+          .map((x) => x.getAttribute('name')!)
+          .toList());
     } catch (e) {
       return Result.failure("Subset '${tile.subset}' not found");
     }
@@ -280,7 +301,8 @@ class SimpleTiledModel extends Model {
   // assemble and save the bitmap
   @override
   void save(String path, Tile tile, int seed) {
-    List<int> bitmapData = List.generate(mX * mY * tilesize * tilesize, (index) => 0);
+    List<int> bitmapData =
+        List.generate(mX * mY * tilesize * tilesize, (index) => 0);
 
     if (observed[0] >= 0) {
       for (int x = 0; x < mX; x++) {
@@ -288,7 +310,9 @@ class SimpleTiledModel extends Model {
           List<int> tile = tiles[observed[x + y * mX]];
           for (int dy = 0; dy < tilesize; dy++) {
             for (int dx = 0; dx < tilesize; dx++) {
-              bitmapData[x * tilesize + dx + (y * tilesize + dy) * mX * tilesize] = tile[dx + dy * tilesize];
+              bitmapData[
+                      x * tilesize + dx + (y * tilesize + dy) * mX * tilesize] =
+                  tile[dx + dy * tilesize];
             }
           }
         }
@@ -299,12 +323,15 @@ class SimpleTiledModel extends Model {
         if (blackBackground && sumsOfOnes[i] == T) {
           for (int yt = 0; yt < tilesize; yt++) {
             for (int xt = 0; xt < tilesize; xt++) {
-              bitmapData[x * tilesize + xt + (y * tilesize + yt) * mX * tilesize] = 0xff000000;
+              bitmapData[x * tilesize +
+                  xt +
+                  (y * tilesize + yt) * mX * tilesize] = 0xff000000;
             }
           }
         } else {
           List<bool> w = wave![i];
-          double normalization = sumsOfWeights[i] > 0 ? 1.0 / sumsOfWeights[i] : 0.0;
+          double normalization =
+              sumsOfWeights[i] > 0 ? 1.0 / sumsOfWeights[i] : 0.0;
           for (int yt = 0; yt < tilesize; yt++) {
             for (int xt = 0; xt < tilesize; xt++) {
               int idi = x * tilesize + xt + (y * tilesize + yt) * mX * tilesize;
@@ -320,7 +347,11 @@ class SimpleTiledModel extends Model {
               r = r.clamp(0, 255);
               g = g.clamp(0, 255);
               b = b.clamp(0, 255);
-              bitmapData[idi] = (0xff000000 | (r.toInt() << 16) | (g.toInt() << 8) | b.toInt()) & 0xFFFFFFFF;
+              bitmapData[idi] = (0xff000000 |
+                      (r.toInt() << 16) |
+                      (g.toInt() << 8) |
+                      b.toInt()) &
+                  0xFFFFFFFF;
             }
           }
         }
@@ -329,7 +360,8 @@ class SimpleTiledModel extends Model {
 
     // attempt to save the bitmpap and log any failures
     try {
-      BitmapHelper.saveBitmap(bitmapData, mX * tilesize, mY * tilesize, "$path$tileName $seed.png");
+      BitmapHelper.saveBitmap(
+          bitmapData, mX * tilesize, mY * tilesize, "$path$tileName $seed.png");
       if (!tile.textOutput) {
         File('$path$tileName $seed.txt').writeAsStringSync(textOutput());
       }

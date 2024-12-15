@@ -1,4 +1,4 @@
-﻿import 'dart:io';
+import 'dart:io';
 
 import 'package:image/image.dart' as img;
 
@@ -11,11 +11,14 @@ class Pair<T> {
 
   // Override == operator to compare Pair objects
   @override
-  bool operator ==(Object other) => identical(this, other) || (other is Pair<T> && other.x == x && other.y == y);
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is Pair<T> && other.x == x && other.y == y);
 
   // Override hashCode to ensure correct behavior in collections
   @override
-  int get hashCode => Object.hash(x, y); // Use Object.hash for better combination
+  int get hashCode =>
+      Object.hash(x, y); // Use Object.hash for better combination
 }
 
 // Matrix<T> - handles a two dimensional array of T
@@ -115,7 +118,9 @@ class Matrix3D<T> {
           (_) => rows > 0
               ? List.generate(
                   rows,
-                  (_) => cols > 0 ? List.generate(cols, (_) => defaultValue as T) : [],
+                  (_) => cols > 0
+                      ? List.generate(cols, (_) => defaultValue as T)
+                      : [],
                 )
               : [],
         );
@@ -210,7 +215,8 @@ class BitmapHelper {
   static BitmapResult loadBitmap(String filename) {
     // Load the image from file as a byte list
     final bytes = File(filename).readAsBytesSync();
-    final image = img.decodeImage(bytes)!; // Decode the image from the byte list
+    final image =
+        img.decodeImage(bytes)!; // Decode the image from the byte list
 
     int width = image.width;
     int height = image.height;
@@ -219,7 +225,9 @@ class BitmapHelper {
     List<int> result = List<int>.generate(width * height, (i) {
       int pixel = image.getPixel(i % width, i ~/ width);
       // Assuming BGRA32 format
-      return (pixel & 0xFF00FF00) | ((pixel & 0xFF0000) >> 16) | ((pixel & 0xFF) << 16);
+      return (pixel & 0xFF00FF00) |
+          ((pixel & 0xFF0000) >> 16) |
+          ((pixel & 0xFF) << 16);
     });
 
     return BitmapResult(result, width, height);
@@ -228,7 +236,8 @@ class BitmapHelper {
   // saveBitmap
   // save a list of ints as a bitmap at a specified location with the specified dimensions
   // as a png
-  static void saveBitmap(List<int> data, int width, int height, String fileName) {
+  static void saveBitmap(
+      List<int> data, int width, int height, String fileName) {
     // Create an empty image
     final image = img.Image(width, height);
     // Convert BGRA32 format back to the image pixels
@@ -237,7 +246,11 @@ class BitmapHelper {
         int index = y * width + x;
         int pixel = data[index];
         // Assuming BGRA32 format
-        image.setPixel(x, y, img.getColor((pixel & 0xFF0000) >> 16, (pixel & 0xFF00) >> 8, pixel & 0xFF));
+        image.setPixel(
+            x,
+            y,
+            img.getColor(
+                (pixel & 0xFF0000) >> 16, (pixel & 0xFF00) >> 8, pixel & 0xFF));
       }
     }
 
@@ -251,7 +264,8 @@ class BitmapHelper {
     List<int> rotatedBitmap = List<int>.filled(size * size, 0);
     for (int y = 0; y < size; y++) {
       for (int x = 0; x < size; x++) {
-        rotatedBitmap[x + y * size] = bitmapResult.bitmap[(size - 1 - y) + x * size];
+        rotatedBitmap[x + y * size] =
+            bitmapResult.bitmap[(size - 1 - y) + x * size];
       }
     }
     return BitmapResult(rotatedBitmap, bitmapResult.width, bitmapResult.height);
@@ -263,9 +277,11 @@ class BitmapHelper {
     List<int> reflectedBitmap = List<int>.filled(size * size, 0);
     for (int y = 0; y < size; y++) {
       for (int x = 0; x < size; x++) {
-        reflectedBitmap[x + y * size] = bitmapResult.bitmap[(size - 1 - x) + y * size];
+        reflectedBitmap[x + y * size] =
+            bitmapResult.bitmap[(size - 1 - x) + y * size];
       }
     }
-    return BitmapResult(reflectedBitmap, bitmapResult.width, bitmapResult.height);
+    return BitmapResult(
+        reflectedBitmap, bitmapResult.width, bitmapResult.height);
   }
 }

@@ -6,3 +6,7 @@
 
 - exported libraries to wfc
 - updated README.md
+
+## 1.0.7
+
+- updated the documentation

@@ -52,7 +52,10 @@ To use the `wfc` package, in your own projects, import the public API (look in e
 
 3. **Run the project**:
    To execute the example provided in main.dart, use:
-   dart run
+
+````
+```dart run
+````
 
 4. **Input files**:
    Place your XML configuration files in the appropriate directory (e.g., lib/tilesets).

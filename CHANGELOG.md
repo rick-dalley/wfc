@@ -2,7 +2,7 @@
 
 - Initial version.
 
-## 1.06
+## 1.0.6
 
 - exported libraries to wfc
 - updated README.md

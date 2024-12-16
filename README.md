@@ -41,15 +41,6 @@ All credit for the core ideas and concepts of WFC goes to mxgmn. This repository
    dart pub get
    ```
 
-   ## Importing the Package
-
-To use the `wfc` package, in your own projects, import the public API (look in example/example.dart or ./main.dart to see examples):
-
-````
-```dart
-``` import 'package:wfc/wfc.dart';
-````
-
 3. **Run the project**:
    To execute the example provided in main.dart, use:
 
@@ -64,9 +55,18 @@ To use the `wfc` package, in your own projects, import the public API (look in e
 5. **Output**:
    Generated bitmaps and optional text outputs will be saved in the output/ directory. Samples of the output can be found in the [output folder](https://github.com/rick-dalley/wfc/tree/master/output)
 
+## Importing the Package
+
+To use the `wfc` package, in your own projects, import the public API (look in example/example.dart or ./main.dart to see examples):
+
+````
+```dart
+``` import 'package:wfc/wfc.dart';
+````
+
 ## Code Structure
 
-- `lib/src/`
+- `lib/src/`:
   - `base_model.dart`: Defines the abstract base model for Wave Function Collapse.
   - `simple_tile_model.dart`: Implements the tile-based WFC algorithm.
   - `logging/logger.dart`: Provides logging functionality with customizable log levels.

@@ -3,9 +3,13 @@ import 'package:image/image.dart' as img;
 
 /// Pair = stores the result of a function that needs to return two values as a tuple
 class Pair<T> {
+  /// any pair x of type T
   final T x;
+
+  /// any pair y of type T
   final T y;
 
+  /// Constructior
   Pair(this.x, this.y);
 
   // Override == operator to compare Pair objects
@@ -24,7 +28,7 @@ class Pair<T> {
 class Matrix<T> {
   final List<List<T>> _matrix;
 
-  // Constructor that accepts rows and optional initial columns with a default value
+  /// Constructor that accepts rows and optional initial columns with a default value
   Matrix(int rows, [int initialCols = 0, T? defaultValue])
       : _matrix = List.generate(
           rows,
@@ -33,10 +37,10 @@ class Matrix<T> {
               : List.generate(initialCols, (_) => defaultValue as T),
         );
 
-  // Getter for the number of rows
+  /// Getter for the number of rows
   int get length => _matrix.length;
 
-  // Override [] to access elements directly (for a row or a specific element)
+  /// Override [] to access elements directly (for a row or a specific element)
   dynamic operator [](var index) {
     if (index is List<int>) {
       // Accessing a specific element with [row, col]
@@ -59,7 +63,7 @@ class Matrix<T> {
     }
   }
 
-  // Override []= to modify elements or rows
+  /// Override []= to modify elements or rows
   void operator []=(var index, dynamic value) {
     if (index is List<int>) {
       // Modifying a specific element with [row, col]
@@ -90,7 +94,7 @@ class Matrix<T> {
     }
   }
 
-  // Method to print the matrix for debugging
+  /// Method to print the matrix for debugging
   @override
   String toString() {
     String matrixString = "";
@@ -109,8 +113,8 @@ class Matrix<T> {
 class Matrix3D<T> {
   final List<List<List<T>>> _matrix;
 
-  //constructors
-  // supply all dimensions
+  /// Constructors
+  /// Matrix3D - all dimensions
   Matrix3D([int layers = 0, int rows = 0, int cols = 0, T? defaultValue])
       : _matrix = List.generate(
           layers,
@@ -124,7 +128,7 @@ class Matrix3D<T> {
               : [],
         );
 
-  //only supply the first 2 dimensions
+  /// Matrix3D.twoD - only supply the first 2 dimensions
   Matrix3D.twoD(int layers, int rows, T? defaultValue)
       : _matrix = List.generate(
           layers,
@@ -133,7 +137,8 @@ class Matrix3D<T> {
             (_) => [], // Third dimension initialized as empty lists
           ),
         );
-  // Access or dynamically grow a specific layer
+
+  /// Access or dynamically grow a specific layer
   List<List<T>> operator [](int layerIndex) {
     // Ensure layer-level growth
     while (_matrix.length <= layerIndex) {
@@ -142,7 +147,7 @@ class Matrix3D<T> {
     return _matrix[layerIndex];
   }
 
-  // Replace a layer
+  /// Replace a layer
   void operator []=(int layerIndex, List<List<T>> newLayer) {
     // Ensure the layer exists before replacing it
     while (_matrix.length <= layerIndex) {
@@ -170,6 +175,7 @@ class Matrix3D<T> {
 
 /// Helper
 class Helper {
+  /// random - provide a random number based on a list of weights
   int random(List<double> weights, double r) {
     double sum = 0;
     for (int i = 0; i < weights.length; i++) {
@@ -185,6 +191,7 @@ class Helper {
     return 0;
   }
 
+  /// toPower
   int toPower(int a, int n) {
     int product = 1;
     for (int i = 0; i < n; i++) {
@@ -195,22 +202,28 @@ class Helper {
 }
 
 /// BitmapResult
-// holds the reulst of creating a bitmap
-// bitmap - the data of the bitmap as an array of ints
-// width - the width as an integer
-// height - the height as an integer
+/// holds the reulst of creating a bitmap
+/// bitmap - the data of the bitmap as an array of ints
+/// width - the width as an integer
+/// height - the height as an integer
 class BitmapResult {
+  /// bitmap - the bitmap data
   final List<int> bitmap;
+
+  /// width - the number of pixels wide
   final int width;
+
+  /// height - the number of pixels high
   final int height;
 
+  /// BitmapResult constructor
   BitmapResult(this.bitmap, this.width, this.height);
 }
 
 /// BitmapHelper
 // - a utility class to load and save bitmaps
 class BitmapHelper {
-  // load a bitmap from a given location
+  /// load a bitmap from a given location
   static BitmapResult loadBitmap(String filename) {
     // Load the image from file as a byte list
     // Load and decode the image from file
@@ -239,9 +252,9 @@ class BitmapHelper {
     return BitmapResult(result, width, height);
   }
 
-  // saveBitmap
-  // save a list of ints as a bitmap at a specified location with the specified dimensions
-  // as a png
+  /// saveBitmap
+  /// save a list of ints as a bitmap at a specified location with the specified dimensions
+  /// as a png
   void saveBitmap(List<int> data, int width, int height, String fileName) {
     // Create an empty image
     final image = img.Image(width: width, height: height);
@@ -266,8 +279,8 @@ class BitmapHelper {
     File(fileName).writeAsBytesSync(img.encodePng(image));
   }
 
-  // rotate
-  // Rotate the bitmap 90 degrees clockwise
+  /// rotate
+  /// Rotate the bitmap 90 degrees clockwise
   BitmapResult rotate(BitmapResult bitmapResult, int size) {
     List<int> rotatedBitmap = List<int>.filled(size * size, 0);
     for (int y = 0; y < size; y++) {
@@ -279,8 +292,8 @@ class BitmapHelper {
     return BitmapResult(rotatedBitmap, bitmapResult.width, bitmapResult.height);
   }
 
-  // reflect
-  // Reflect the bitmap horizontally
+  /// reflect
+  /// Reflect the bitmap horizontally
   BitmapResult reflect(BitmapResult bitmapResult, int size) {
     List<int> reflectedBitmap = List<int>.filled(size * size, 0);
     for (int y = 0; y < size; y++) {

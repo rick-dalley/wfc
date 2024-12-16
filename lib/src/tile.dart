@@ -1,17 +1,37 @@
 /// Heuristic
 /// defines the type of Heuristic to use when performing the wfc
-enum Heuristic { unassigned, entropy, scanline, mrv }
+enum Heuristic {
+  /// unassigned
+  unassigned,
 
+  /// entropy
+  entropy,
+
+  /// scanline
+  scanline,
+
+  /// mrv
+  mrv
+}
+
+/// get the heuristic from a string
 Map<String, Heuristic> heuristicFromString = {
   "Scanline": Heuristic.scanline,
   "Entropy": Heuristic.entropy,
   "MRV": Heuristic.mrv,
 };
 
-///Category
-///the two types of output
-enum Category { simpletiled, overlapping }
+/// Category
+/// the two types of output
+enum Category {
+  /// simple tiled output
+  simpletiled,
 
+  ///overlapping output
+  overlapping
+}
+
+/// get the category from a string - i.e. from reading xml
 Map<String, Category> categoryFromString = {
   "simpletiled": Category.simpletiled,
   "overlapping": Category.overlapping,
@@ -22,29 +42,60 @@ Map<String, Category> categoryFromString = {
 /// what the wfc algorithm should do with it
 class Tile {
   // members
+  /// size - dimensions of the tile
   int size = 24;
+
+  /// width - usually the size
   int width = 0;
+
+  /// height - usually the size
   int height = 0;
+
+  /// is it periodic
   bool periodic = false;
+
+  /// what category of tile is this
   Category category = Category.overlapping;
+
+  /// the name of the tile
   String name = "";
+
+  /// what heuristice to use
   Heuristic heuristic = Heuristic.unassigned;
+
+  /// subset
   String subset = "";
+
+  /// black background
   bool blackBackground = true;
+
+  /// the dimensions in tiels
   int N = 3;
+
+  /// periodic input
   bool periodicInput = false;
+
+  /// symmetry
   int symmetry = 8;
+
+  /// ground
   bool ground = true;
+
+  /// limit
   int limit = -1;
+
+  /// number of screenshots to make
   int screenshots = 2;
+
+  /// textOuptut to accompany the bitmap
   bool textOutput = false;
 
   //constructors
 
-  //default
+  /// Tile
   Tile();
 
-  //fromJSON
+  /// fromJSON
   Tile.fromJSON(Map<String, dynamic> tileJSONMap) {
     String categoryName = tileJSONMap["type"] ?? "overlapping";
     category = categoryFromString[categoryName] ?? Category.overlapping;

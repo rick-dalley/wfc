@@ -15,8 +15,13 @@ import 'package:wfc/src/base_model.dart';
 /// by the base class
 /// overrides the save method to store the created bitmap to a specified location
 class OverlappingModel extends Model {
+  /// list of collors
   late List<int> colors;
+
+  ///list of patterns
   late List<Uint8List> patterns;
+
+  /// what to use for handling logging
   late final LogHandler logHandler;
 
   /// constructor
@@ -60,9 +65,11 @@ class OverlappingModel extends Model {
       return result;
     }
 
-    Uint8List rotate(Uint8List p, int N) => pattern((x, y) => p[N - 1 - y + x * N], N);
+    Uint8List rotate(Uint8List p, int N) =>
+        pattern((x, y) => p[N - 1 - y + x * N], N);
 
-    Uint8List reflect(Uint8List p, int N) => pattern((x, y) => p[N - 1 - x + y * N], N);
+    Uint8List reflect(Uint8List p, int N) =>
+        pattern((x, y) => p[N - 1 - x + y * N], N);
 
     int hash(Uint8List p, int C) {
       int result = 0, power = 1;
@@ -87,7 +94,8 @@ class OverlappingModel extends Model {
     for (int y = 0; y < ymax; y++) {
       for (int x = 0; x < xmax; x++) {
         List<Uint8List> ps = List.generate(8, (_) => Uint8List(N * N));
-        ps[0] = pattern((dx, dy) => sample[(x + dx) % sX + (y + dy) % sY * sX], N);
+        ps[0] =
+            pattern((dx, dy) => sample[(x + dx) % sX + (y + dy) % sY * sX], N);
         ps[1] = reflect(ps[0], N);
         ps[2] = rotate(ps[0], N);
         ps[3] = reflect(ps[2], N);
@@ -141,7 +149,8 @@ class OverlappingModel extends Model {
         for (int t = 0; t < T; t++) {
           List<int> list = [];
           for (int t2 = 0; t2 < T; t2++) {
-            if (agrees(patterns[t], patterns[t2], Model.dx[d], Model.dy[d], N)) {
+            if (agrees(
+                patterns[t], patterns[t2], Model.dx[d], Model.dy[d], N)) {
               list.add(t2);
             }
           }
@@ -161,7 +170,8 @@ class OverlappingModel extends Model {
         int dy = y < mY - N + 1 ? 0 : N - 1;
         for (int x = 0; x < mX; x++) {
           int dx = x < mX - N + 1 ? 0 : N - 1;
-          bitmap[x + y * mX] = colors[patterns[observed[x - dx + (y - dy) * mX]][dx + dy * N]];
+          bitmap[x + y * mX] =
+              colors[patterns[observed[x - dx + (y - dy) * mX]][dx + dy * N]];
         }
       }
     } else {

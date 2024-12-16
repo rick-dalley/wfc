@@ -11,21 +11,32 @@ import 'tile.dart';
 /// Used to store a result that can be tested for pass or fail, and if failed
 /// provide an error explanation
 class Result<T> {
+  /// a result of any type
   final T? value;
+
+  /// a string description of the error
   final String? error;
+
+  /// a boolean indicated whether the result is ok
   final bool ok;
 
+  /// success
   Result.success(this.value)
       : error = null,
         ok = true;
+
+  /// failuer
   Result.failure(this.error)
       : value = null,
         ok = false;
 
+  /// a helper failed instead of explicityly testing for !ok
   bool get failed => !ok;
 }
 
+/// enforce saving with a path, tile, and seed
 abstract class Saveable {
+  /// save should implement saving a bitmap to the path based on the tile, and a random seed to differentiate output files
   void save(String path, Tile tile, int seed);
 }
 
@@ -37,43 +48,94 @@ abstract class Saveable {
 class Model implements Saveable {
   //members
 
+  /// dx
   static List<int> dx = [-1, 0, 1, 0];
+
+  /// dy
   static List<int> dy = [0, 1, 0, -1];
+
+  /// opposite
   static List<int> opposite = [2, 3, 0, 1];
 
+  /// the wave a matrix to guide the collapse
   Matrix<bool>? wave;
 
+  ///propogator
   Matrix3D<int>? propagator;
+
+  ///compatible
   Matrix3D<int>? compatible;
+
+  ///observed
   List<int> observed = [];
 
+  /// stack
   List<Pair<int>> stack = [];
+
+  /// stacksize
   int stacksize = 0;
+
+  ///observed so far
   int observedSoFar = 0;
 
+  /// mx the tile width
   int mX = 0;
+
+  /// the tile height
   int mY = 0;
+
+  /// T
   int T = 0;
+
+  /// N
   int N = 0;
+
+  /// periodice
   bool periodic = false;
+
+  ///ground
   bool ground = false;
+
+  ///weights
   List<double> weights = [];
+
+  ///weightLogWeights
   List<double> weightLogWeights = [];
+
+  ///distribution
   List<double> distribution = [];
 
+  ///sumOfOnes
   List<int> sumsOfOnes = [];
+
+  /// sumOfWeights
   double sumOfWeights = 0.0;
+
+  /// sumOfWeightLogWeights
   double sumOfWeightLogWeights = 0.0;
+
+  /// startingEntropy
   double startingEntropy = 0.0;
+
+  /// sumOfWeights
   List<double> sumsOfWeights = [];
+
+  /// sumOfWeightLogWeights
   List<double> sumsOfWeightLogWeights = [];
+
+  ///entropies
   List<double> entropies = [];
+
+  ///heuristic
   Heuristic heuristic = Heuristic.unassigned;
 
+  ///tileName
   String tileName = "";
 
-// Constructor
-// paramater Tile
+  /// Constructors
+
+  /// Model
+  /// paramater (Tile)
   Model(Tile tile) {
     mX = tile.width;
     mY = tile.height;
@@ -83,6 +145,7 @@ class Model implements Saveable {
     tileName = tile.name;
   }
 
+  /// init - setup the members to perform the wfc
   void init() {
     wave = Matrix<bool>(mX * mY, T, false);
     compatible = Matrix3D(wave!.length, T, 4, 0);
@@ -110,7 +173,7 @@ class Model implements Saveable {
     stacksize = 0;
   }
 
-// performs the wave function collapse
+  /// run performs the wave function collapse
   bool run(int seed, int limit) {
     if (wave == null) {
       init();
@@ -142,6 +205,7 @@ class Model implements Saveable {
     return true;
   }
 
+  /// nextUnobservedNode(closure) picks a random node to compare
   int nextUnobservedNode(Random random) {
     if (heuristic == Heuristic.scanline) {
       for (int i = observedSoFar; i < wave!.length; i++) {
@@ -163,7 +227,8 @@ class Model implements Saveable {
         continue;
       }
       int remainingValues = sumsOfOnes[i];
-      num entropy = heuristic == Heuristic.entropy ? entropies[i] : remainingValues;
+      num entropy =
+          heuristic == Heuristic.entropy ? entropies[i] : remainingValues;
       if (remainingValues > 1 && entropy <= min) {
         double noise = 1E-6 * random.nextDouble();
         if (entropy + noise < min) {
@@ -175,7 +240,7 @@ class Model implements Saveable {
     return argmin;
   }
 
-// Weighted random selection function
+  /// Weighted random selection function
   int weightedRandomSelection(List<double> distribution, double randomValue) {
     // Step 1: Calculate cumulative sum
     List<double> cumulative = [];
@@ -199,6 +264,7 @@ class Model implements Saveable {
     return cumulative.length - 1;
   }
 
+  /// observe
   void observe(int node, Random random) {
     List<bool> w = wave![node];
     for (int t = 0; t < T; t++) {
@@ -213,6 +279,7 @@ class Model implements Saveable {
     }
   }
 
+  ///propogate
   bool propagate() {
     while (stacksize > 0) {
       Pair stackItem = stack[stacksize - 1];
@@ -258,6 +325,7 @@ class Model implements Saveable {
     return sumsOfOnes[0] > 0;
   }
 
+  /// ban
   void ban(int i, int t) {
     wave![i][t] = false;
 
@@ -276,6 +344,7 @@ class Model implements Saveable {
     entropies[i] = log(sum) - sumsOfWeightLogWeights[i] / sum;
   }
 
+  /// clear
   void clear() {
     for (int i = 0; i < wave!.length; i++) {
       for (int t = 0; t < T; t++) {
@@ -311,11 +380,14 @@ class Model implements Saveable {
   void save(String path, Tile tile, int seed) {}
 }
 
-//factory method to create a model
+/// createModel
+/// factory method to create a model depending on the tile category : overlapping or simple_tiled
 Model createModel(Tile tile, String basePath, {LogHandler? logHandler}) {
-  final log = logHandler ?? Logger().log; // Use the provided logger or the default one
+  final log =
+      logHandler ?? Logger().log; // Use the provided logger or the default one
   if (tile.category == Category.overlapping) {
-    return OverlappingModel(tile, "$basePath/assets/samples/${tile.name}.png", logHandler: log);
+    return OverlappingModel(tile, "$basePath/assets/samples/${tile.name}.png",
+        logHandler: log);
   } else {
     return SimpleTiledModel(tile, "$basePath/assets/tilesets", logHandler: log);
   }

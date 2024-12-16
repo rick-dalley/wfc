@@ -3,28 +3,59 @@ import 'dart:io';
 
 /// LogLevel
 /// Controls the verbosity and location of logging
-enum LogLevel { debug, info, warning, error, none }
+enum LogLevel {
+  /// debug level
+  debug,
 
+  /// info for the user
+  info,
+
+  /// warning - unusual
+  warning,
+
+  /// error - a problem
+  error,
+
+  /// none - no level has been supplied
+  none
+}
+
+/// LogHandler function declaration
 typedef LogHandler = void Function(String message, {LogLevel level});
 
+/// Logger
+/// a custom logger
 class Logger {
+  /// levelConfig a map of the types of logging
   Map<LogLevel, LogConfig>? levelConfig;
+
+  /// the function that will do the logging
   final LogHandler logHandler;
+
+  /// notified
   bool notified = false;
+
+  ///Constructors
+  ///Logger
   Logger({this.logHandler = defaultLogHandler});
 
+  /// Logger.startWith - lets you initialize with a path and a handler
   Logger.startWith(String configPath, {LogHandler? logHandler})
       : levelConfig = _readConfig(configPath),
         logHandler = logHandler ?? defaultLogHandler;
 
+  /// startWith - if unavailable at construction let's you set the configPath after you've constructed the log handler
   void startWith(String configPath) {
     levelConfig = _readConfig(configPath);
   }
 
-  static void defaultLogHandler(String message, {LogLevel level = LogLevel.info}) {
+  /// defaultLogHandler - provide a simple logger for writing to the screen
+  static void defaultLogHandler(String message,
+      {LogLevel level = LogLevel.info}) {
     print(message);
   }
 
+  /// log - log a message of a particular level
   void log(String message, {LogLevel level = LogLevel.info}) {
     if (levelConfig == null) {
       if (!notified) {
@@ -67,7 +98,8 @@ class Logger {
 
   void _sendToService(String message, Uri? serviceUri) {
     if (serviceUri != null) {
-      logHandler('Sent to service [$serviceUri]: $message', level: LogLevel.info);
+      logHandler('Sent to service [$serviceUri]: $message',
+          level: LogLevel.info);
     }
   }
 
@@ -77,7 +109,8 @@ class Logger {
     final configList = List<Map<String, dynamic>>.from(jsonDecode(contents));
     return {
       for (var config in configList)
-        LogLevel.values.firstWhere((lvl) => lvl.name.toLowerCase() == config['logLevel'].toLowerCase(),
+        LogLevel.values.firstWhere(
+            (lvl) => lvl.name.toLowerCase() == config['logLevel'].toLowerCase(),
             orElse: () => LogLevel.none): LogConfig.fromMap(config)
     };
   }
@@ -87,9 +120,16 @@ class Logger {
 /// Takes the log type and relates it to a user defined output destincation
 /// defaults to the screen.
 class LogConfig {
+  /// enabled
   final bool enabled;
+
+  /// type of outpuyt
   final String outputType;
+
+  ///local location of output
   final String? filePath;
+
+  /// URI
   final Uri? serviceUri;
 
   ///LogConfig
@@ -104,17 +144,22 @@ class LogConfig {
     this.serviceUri,
   });
 
+  /// construct from the config map
   factory LogConfig.fromMap(Map<String, dynamic> map) {
     return LogConfig(
       enabled: map['enabled'] ?? true,
       outputType: map['output']['type'],
       filePath: map['output']['type'] == 'file' ? map['output']['path'] : null,
-      serviceUri: map['output']['type'] == 'service' ? Uri.parse(map['output']['uri']) : null,
+      serviceUri: map['output']['type'] == 'service'
+          ? Uri.parse(map['output']['uri'])
+          : null,
     );
   }
 }
 
+/// an extension to provide strings for the logging level
 extension LogLevelExtension on LogLevel {
+  /// name - the string representation
   String get name {
     switch (this) {
       case LogLevel.debug:

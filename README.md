@@ -18,9 +18,9 @@ All credit for the core ideas and concepts of WFC goes to mxgmn. This repository
 - Customizable logging with support for user-defined log handlers.
 - A custom logger has been provided as an example:
 
-````
-```  import 'package:wfc/src/logging/logger.dart'; // in other projects if you'd like to try it
-````
+```
+  import 'package:wfc/src/logging/logger.dart'; // in other projects if you'd like to try it
+```
 
 - Includes helper classes for bitmap manipulation and procedural content generation.
 
@@ -28,24 +28,23 @@ All credit for the core ideas and concepts of WFC goes to mxgmn. This repository
 
 1. **Clone the repository**:
 
-   ```bash
+```bash
    git clone https://github.com/rick-dalley/wfc.git
    cd wfc
-
-   ```
+```
 
 2. **Install dependencies**:
    Ensure you have Dart installed on your system. Install dependencies by running:
 
-   ```
+```
    dart pub get
-   ```
+```
 
 3. **Run the project**:
    To execute the example provided in main.dart, use:
 
 ````
-```dart run
+   dart run
 ````
 
 4. **Input files**:
@@ -60,8 +59,8 @@ All credit for the core ideas and concepts of WFC goes to mxgmn. This repository
 To use the `wfc` package, in your own projects, import the public API (look in example/example.dart or ./main.dart to see examples):
 
 ````
-```dart
-``` import 'package:wfc/wfc.dart';
+   dart
+   import 'package:wfc/wfc.dart';
 ````
 
 ## Code Structure

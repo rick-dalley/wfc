@@ -16,6 +16,12 @@ All credit for the core ideas and concepts of WFC goes to mxgmn. This repository
 - Designed for compatibility with Flutter and other Dart applications.
 - Reads tile configurations from XML and JSON files, similar to the original implementation.
 - Customizable logging with support for user-defined log handlers.
+- A custom logger has been provided as an example:
+
+````
+```  import 'package:wfc/src/logging/logger.dart'; // in other projects if you'd like to try it
+````
+
 - Includes helper classes for bitmap manipulation and procedural content generation.
 
 ## Usage
@@ -30,29 +36,41 @@ All credit for the core ideas and concepts of WFC goes to mxgmn. This repository
 
 2. **Install dependencies**:
    Ensure you have Dart installed on your system. Install dependencies by running:
+
    ```
    dart pub get
    ```
-4. **Run the project**:
+
+   ## Importing the Package
+
+To use the `wfc` package, in your own projects, import the public API (look in example/example.dart or ./main.dart to see examples):
+
+````
+```dart
+``` import 'package:wfc/wfc.dart';
+````
+
+3. **Run the project**:
    To execute the example provided in main.dart, use:
    dart run
 
-5. **Input files**:
+4. **Input files**:
    Place your XML configuration files in the appropriate directory (e.g., lib/tilesets).
    Modify the sample JSON file (samples.json) to include your tile configurations.
 
-6. **Output**:
+5. **Output**:
    Generated bitmaps and optional text outputs will be saved in the output/ directory. Samples of the output can be found in the [output folder](https://github.com/rick-dalley/wfc/tree/master/output)
 
 ## Code Structure
 
-- `lib/`
+- `lib/src/`
   - `base_model.dart`: Defines the abstract base model for Wave Function Collapse.
   - `simple_tile_model.dart`: Implements the tile-based WFC algorithm.
   - `logging/logger.dart`: Provides logging functionality with customizable log levels.
   - `tile.dart`: Represents tile configurations.
   - `bitmap_helper.dart`: Contains utility functions for bitmap manipulation.
-- `main.dart`: Example usage of the algorithm.
+- `main.dart`: Example usage of the algorithm, which reads all inputs and creates multiple outputs to give an idea of the breadth of the functionality
+- `example/example.dart`: Example usage that demonstrates an output
 - `output/`: Directory where generated outputs are saved.
 
 6. **Contributing**

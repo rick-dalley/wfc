@@ -1,9 +1,41 @@
+import 'dart:convert';
 import 'dart:io';
 import 'dart:math';
 
-import 'package:wfc/src/base_model.dart';
+import 'package:wfc/wfc.dart';
 
-import '../wfc.dart';
+Logger logger = Logger();
+
+Future<List<Tile>> parseTilesFromFile(String filePath) async {
+  final fileContent = await File(filePath).readAsString();
+
+  // Parse the JSON content
+  final List<dynamic> jsonList = jsonDecode(fileContent);
+
+  // Map JSON elements to Tile objects
+  List<Tile> tileList = [];
+  for (var tileMap in jsonList) {
+    try {
+      var parsedTile = Tile.fromJSON(tileMap as Map<String, dynamic>);
+      tileList.add(parsedTile);
+    } catch (e) {
+      logger.log('Error parsing tile: $tileMap, Error: $e');
+    }
+  }
+  return tileList;
+}
+
+void prepareOutputDestination(String pathToOutput) {
+  final folder = Directory(pathToOutput);
+  if (!folder.existsSync()) {
+    folder.createSync();
+  }
+
+  // Iterate through files in the directory and delete them
+  folder.listSync().whereType<File>().forEach((file) {
+    file.deleteSync();
+  });
+}
 
 void main() async {
   // Set up paths

@@ -1,6 +1,6 @@
 name: wfc
 description: A package providing procedural map generation using the Wave Function Collapse algorithm.
-version: 1.0.5
+version: 1.0.6
 repository: https://github.com/rick-dalley/wfc
 homepage: https://github.com/rick-dalley/wfc
 

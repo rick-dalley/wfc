@@ -1,3 +1,5 @@
+/// Heuristic
+/// defines the type of Heuristic to use when performing the wfc
 enum Heuristic { unassigned, entropy, scanline, mrv }
 
 Map<String, Heuristic> heuristicFromString = {
@@ -6,6 +8,8 @@ Map<String, Heuristic> heuristicFromString = {
   "MRV": Heuristic.mrv,
 };
 
+///Category
+///the two types of output
 enum Category { simpletiled, overlapping }
 
 Map<String, Category> categoryFromString = {
@@ -13,6 +17,9 @@ Map<String, Category> categoryFromString = {
   "overlapping": Category.overlapping,
 };
 
+/// Tile
+/// The description of the input bitmap to use, and
+/// what the wfc algorithm should do with it
 class Tile {
   // members
   int size = 24;

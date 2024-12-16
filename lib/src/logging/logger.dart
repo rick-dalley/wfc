@@ -1,6 +1,8 @@
 import 'dart:convert';
 import 'dart:io';
 
+/// LogLevel
+/// Controls the verbosity and location of logging
 enum LogLevel { debug, info, warning, error, none }
 
 typedef LogHandler = void Function(String message, {LogLevel level});
@@ -19,8 +21,7 @@ class Logger {
     levelConfig = _readConfig(configPath);
   }
 
-  static void defaultLogHandler(String message,
-      {LogLevel level = LogLevel.info}) {
+  static void defaultLogHandler(String message, {LogLevel level = LogLevel.info}) {
     print(message);
   }
 
@@ -66,8 +67,7 @@ class Logger {
 
   void _sendToService(String message, Uri? serviceUri) {
     if (serviceUri != null) {
-      logHandler('Sent to service [$serviceUri]: $message',
-          level: LogLevel.info);
+      logHandler('Sent to service [$serviceUri]: $message', level: LogLevel.info);
     }
   }
 
@@ -77,19 +77,26 @@ class Logger {
     final configList = List<Map<String, dynamic>>.from(jsonDecode(contents));
     return {
       for (var config in configList)
-        LogLevel.values.firstWhere(
-            (lvl) => lvl.name.toLowerCase() == config['logLevel'].toLowerCase(),
+        LogLevel.values.firstWhere((lvl) => lvl.name.toLowerCase() == config['logLevel'].toLowerCase(),
             orElse: () => LogLevel.none): LogConfig.fromMap(config)
     };
   }
 }
 
+/// LogConfig
+/// Takes the log type and relates it to a user defined output destincation
+/// defaults to the screen.
 class LogConfig {
   final bool enabled;
   final String outputType;
   final String? filePath;
   final Uri? serviceUri;
 
+  ///LogConfig
+  /// param - (bool) enable - enable the output
+  /// parame - (String)  outputType - the destination of the output
+  /// param - (String)  filePath - if a local drive - the path
+  /// param - (Uri)  serviceUri - if elsewhere the Uri
   LogConfig({
     required this.enabled,
     required this.outputType,
@@ -102,9 +109,7 @@ class LogConfig {
       enabled: map['enabled'] ?? true,
       outputType: map['output']['type'],
       filePath: map['output']['type'] == 'file' ? map['output']['path'] : null,
-      serviceUri: map['output']['type'] == 'service'
-          ? Uri.parse(map['output']['uri'])
-          : null,
+      serviceUri: map['output']['type'] == 'service' ? Uri.parse(map['output']['uri']) : null,
     );
   }
 }

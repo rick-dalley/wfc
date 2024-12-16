@@ -7,6 +7,9 @@ import 'package:wfc/src/simple_tiled_model.dart';
 import 'bitmap_helper.dart';
 import 'tile.dart';
 
+/// Result
+/// Used to store a result that can be tested for pass or fail, and if failed
+/// provide an error explanation
 class Result<T> {
   final T? value;
   final String? error;
@@ -26,8 +29,13 @@ abstract class Saveable {
   void save(String path, Tile tile, int seed);
 }
 
+/// Model
+/// Is the base model for the classes that perform initialization of the two types
+/// of map input
+/// Is constructed from a Tile class and performs a run method to produce the bitmap
+/// and a save to persist it.
 class Model implements Saveable {
-  //properties
+  //members
 
   static List<int> dx = [-1, 0, 1, 0];
   static List<int> dy = [0, 1, 0, -1];
@@ -64,6 +72,8 @@ class Model implements Saveable {
 
   String tileName = "";
 
+// Constructor
+// paramater Tile
   Model(Tile tile) {
     mX = tile.width;
     mY = tile.height;
@@ -100,6 +110,7 @@ class Model implements Saveable {
     stacksize = 0;
   }
 
+// performs the wave function collapse
   bool run(int seed, int limit) {
     if (wave == null) {
       init();
@@ -152,8 +163,7 @@ class Model implements Saveable {
         continue;
       }
       int remainingValues = sumsOfOnes[i];
-      num entropy =
-          heuristic == Heuristic.entropy ? entropies[i] : remainingValues;
+      num entropy = heuristic == Heuristic.entropy ? entropies[i] : remainingValues;
       if (remainingValues > 1 && entropy <= min) {
         double noise = 1E-6 * random.nextDouble();
         if (entropy + noise < min) {
@@ -303,11 +313,9 @@ class Model implements Saveable {
 
 //factory method to create a model
 Model createModel(Tile tile, String basePath, {LogHandler? logHandler}) {
-  final log =
-      logHandler ?? Logger().log; // Use the provided logger or the default one
+  final log = logHandler ?? Logger().log; // Use the provided logger or the default one
   if (tile.category == Category.overlapping) {
-    return OverlappingModel(tile, "$basePath/assets/samples/${tile.name}.png",
-        logHandler: log);
+    return OverlappingModel(tile, "$basePath/assets/samples/${tile.name}.png", logHandler: log);
   } else {
     return SimpleTiledModel(tile, "$basePath/assets/tilesets", logHandler: log);
   }
